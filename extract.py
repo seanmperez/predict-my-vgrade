@@ -4,10 +4,13 @@ import os
 
 def db_connect(path: str = os.path.join("data", "raw", "8anu.sqlite")):
     """
-    Creates a cursor to connect to the 
+    Creates a cursor to connect to the sqlite db.
     """
+    SQL_DB_URL = "https://www.kaggle.com/dcohen21/8anu-climbing-logbook"
+
     if not os.path.exists(path):
         print(f"Path to the Sqlite db {path} not found!")
+        print(f"Consider downloading from {SQL_DB_URL} and saving to {path}")
 
     return sqlite3.connect(path)
 
@@ -56,7 +59,9 @@ def get_grade_conversion_table() -> pd.DataFrame:
 
 def write_data(path: str = os.path.join("data", "processed")) -> None:
     """
-    Writes two csvs to the data directory
+    Writes two csvs to the data directory:
+    1. grade_conversion.csv - A table to convert the 8anu grade system to V-grade and french grades.
+    2. max_boulder_grade_users.csv - The raw climbing data extracted from SQL.
     """
 
     if not os.path.exists(path):
