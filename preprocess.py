@@ -24,7 +24,6 @@ def mask_extreme_values(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-
 def row_level_missing(df: pd.DataFrame, add_column = False,plot = False):
     """
     Find if rows with missing values have many missing.
