@@ -16,6 +16,9 @@ from xgboost import XGBRegressor
 
 import pickle
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 class ModelClimbers():
     """
