@@ -12,7 +12,7 @@ def db_connect(path: str = os.path.join("data", "raw", "8anu.sqlite")):
     """
     Creates a cursor to connect to the sqlite db.
     """
-    print(os.getcwd())
+    
     SQL_DB_URL = "https://www.kaggle.com/dcohen21/8anu-climbing-logbook"
 
     if not os.path.exists(path):
