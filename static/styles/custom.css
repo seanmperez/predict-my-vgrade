@@ -1,0 +1,83 @@
+@import url("styles.css");
+
+body {
+    background-image: linear-gradient(to right,#ffe4b8,#ffbdab );
+    font-family:Verdana, Geneva, Tahoma, sans-serif;  
+  }
+
+.btn-lg {
+  padding: .5rem 4rem;
+  font-size: 1.25rem;
+  border-radius: 3.3rem;
+  margin: 4rem 1rem;
+}
+
+.btn-light {
+    color: #fbfbfb;
+    background-color: #333333;
+    border-color: #333333;
+}
+
+.btn-light:hover {
+    color: #fbfbfb;
+    background-color: #454545;
+    border-color: #454545;
+  }
+
+.form-control {
+    display:inline;
+}
+
+.container {
+    justify-content: center;
+    align-items: center;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fw-bolder {
+  color: #333;
+}
+
+h1 {
+  margin-bottom: 3rem;
+}
+
+input {
+  outline: 0;
+  border-width: 0 0 2 px;
+  border-color: #333;
+  background-color: transparent;
+  width: 20.4vw;
+}
+
+input:focus {
+  border-color: #68aca9;
+}
+
+.inp {
+  border: none;
+  border-bottom: 3px solid #333;
+  padding: 5px 10px;
+  outline: none;
+  margin-top: 2rem;
+}
+
+::placeholder {
+  font-size: 21px;
+  color: #c1b3b1;
+}
+
+[placeholder]:focus::-webkit-input-placeholder {
+   opacity: 1;
+   font-size: 1.4rem;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
