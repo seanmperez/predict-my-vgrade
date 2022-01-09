@@ -16,6 +16,9 @@ from xgboost import XGBRegressor
 
 import pickle
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 class ModelClimbers():
     """
@@ -28,7 +31,7 @@ class ModelClimbers():
 
         if df:
             print("Using dataframe gather data.")
-            self.data = df
+            self.data = df.drop(columns=["sex"])
 
         elif path:
             print("Using path to csv to upload data.")
@@ -36,7 +39,7 @@ class ModelClimbers():
                 print(f"The path {path} does not exist!")
                 return
             else: 
-                self.data = pd.read_csv(path).iloc[:,1:]
+                self.data = pd.read_csv(path).iloc[:,1:].drop(columns=["sex"])
         else:
             print("Must provide a path or dataframe!")
         
@@ -64,11 +67,7 @@ class ModelClimbers():
         Scales the test data, can also optionally save the standard scaler. 
         """
 
-        numeric_feats = ['height', 'weight', 'years_climbing', 'age']
-
-        col_trans = ColumnTransformer([('std_scale_num', StandardScaler(), numeric_feats)], remainder='passthrough')
-
-        std_scaler = col_trans.fit(self.X_train)
+        std_scaler = StandardScaler().fit(self.X_train)
 
         X_train_std = std_scaler.transform(self.X_train)
         X_test_std = std_scaler.transform(self.X_test)
@@ -76,12 +75,8 @@ class ModelClimbers():
         self.X_train_std = X_train_std
         self.X_test_std = X_test_std
 
-        if save_scaler:
-            if os.path.exists(path):
-                print(f"Standard scaler already exists at {path}")
-            else:
-                pickle.dump(std_scaler, open(path,'wb'))
-                print(f"Saved standard scaler to {path}")
+        pickle.dump(std_scaler, open(path,'wb'))
+        print(f"Saved standard scaler to {path}")
     
     def linear_regression(self):
         """
@@ -147,15 +142,14 @@ class ModelClimbers():
         """
         
         model = XGBRegressor()
-        #model_fit = XGBRegressor().fit(data["X_train_std"], data["y_train"])
 
         param_grid = {
-            'learning_rate': [0.01, 0.1, 0.3],
-            'max_depth': [3, 6, 9],
-            'min_child_weight': [1, 3, 5],
+            'learning_rate': [0.01, 0.1],
+            'max_depth': [3, 6],
+            'min_child_weight': [1, 3],
             'subsample': [0.4, 0.7, 1],
             'colsample_bytree': [0.2, 0.6, 1],
-            'n_estimators' : [100, 200, 500]
+            'n_estimators' : [100, 200]
         }
 
         print("Hyper parameter tuning xgboost model...")
@@ -223,7 +217,7 @@ class ModelClimbers():
         for model in self.models.keys():
             filename = f"{model}.pkl"
             filepath = os.path.join(path, filename)
-            pickle.dump(model, open(filepath, 'wb'))
+            pickle.dump(self.models[model]["model"], open(filepath, 'wb'))
             print(f"Saved {model} to {filepath}.")
 
 

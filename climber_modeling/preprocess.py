@@ -5,6 +5,10 @@ import seaborn as sns
 import os
 from sklearn.impute import KNNImputer
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+
 def mask_extreme_values(df: pd.DataFrame) -> pd.DataFrame:
     """
     Removes extreme values for climber features.
