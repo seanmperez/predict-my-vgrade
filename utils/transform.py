@@ -1,7 +1,4 @@
-import pickle
-import numpy as np
-import pandas as pd
-import os
+from numpy import array
 
 def lbs_to_kg(lb: float) -> float:
     """
@@ -15,34 +12,30 @@ def ft_to_cm(ft: int, inch: int) -> float:
     Converts height in feet and inches to cm
     """
 
-    ft_float = (ft) + (inch/12)
+    ft_float = ft + inch/12
     return ft_float * 30.48
 
-def inputs_to_array(input_data: dict) -> np.array:
+def inputs_to_array(input_data: dict) -> array:
     """
     Takes a dictionary of climber input values and returns the formatted numpy array
 
     The input format should be:
     input_data = {
-        "age" : int,
-        "feet" : int,
-        "inches" : int,
-        "age" : int,
-        "weight" : float,
-        "years_climbing" : int
+        "age" : str, -> float
+        "feet" : str, -> float
+        "inches" : str, -> float
+        "age" : str, -> float
+        "weight" : str, -> float
+        "years_climbing" : str, -> float
     }
     """
+    # Convert dictionary values to floats
+    input_numerical = {key : round(float(val), 1) for key, val in input_data.items()}
 
-    # Convert height to  
-    height = ft_to_cm(input_data["feet"], input_data["inches"])
+    height = ft_to_cm(input_numerical["feet"], input_numerical["inches"])
     
-    raw_weight = input_data["weight"]["value"]
-
-    if input_data["weight"]["kg"]:
-        weight = raw_weight    
-    else:
-        weight = lbs_to_kg(raw_weight)
+    weight = lbs_to_kg(input_numerical["weight"])
     
-    input_array = np.array([[height, weight, input_data["years_climbing"], input_data["age"]]])
+    model_inputs = array([[height, weight, input_numerical["years_climbing"], input_numerical["age"]]])
 
-    return input_array
+    return model_inputs

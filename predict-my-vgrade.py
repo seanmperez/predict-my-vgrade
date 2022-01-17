@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
+import utils.transform
+import utils.predict
 
 app = Flask(__name__, 
 static_url_path='/static')
@@ -15,9 +17,20 @@ def index():
 
     if request.method == "POST":
         #print("POST triggered")
-        #print(print(f"\n\n Form Data---\n{request.form}\n---\n\n"))
+        print(print(f"\n\n Form Data---\n{request.form}\n---\n\n"))
+        form_data = request.form
 
-        session["data"] = request.form
+        #Transform data to a numpy array
+        transformed_form_data = utils.transform.inputs_to_array(form_data)
+
+        test_prediction = utils.predict.predict(transformed_form_data)
+        print(f"\n\n Predicted Data---\n {test_prediction} \n---\n\n")
+
+        # 
+        #session["data"] = 
+
+        #test_transform = utils.transform.inputs_to_array(form_data)
+        #print(f"\n\n Transformed Data---\n {test_transform} \n---\n\n")
         
         return redirect(url_for("results"))
 
@@ -29,7 +42,7 @@ def results():
     Returns the results
     """
     data = session.get("data")
-    #print(f"\nSession Data includes\n\n{data}\n\n")
+    print(f"\nSession Data includes\n\n{data}\n\n")
     return render_template("results.html", data=data)
 
 if __name__ == '__main__':
