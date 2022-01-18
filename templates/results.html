@@ -1,8 +1,7 @@
 <h1>Results!</h1>
-{% for i, value in enumerate(data) %}
-<h4>{{f"input {i}"}}</h4>
-<p>{{value}}</p>
-{% endfor %}
+<h4>We predict your results to be</h4>
+<p>{{data["results"]}}</p>
+
 
 <!--
 {% for key, value in data.items() %}

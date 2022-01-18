@@ -1,20 +1,24 @@
 import pickle
 import numpy as np
 import pandas as pd
+from os.path import dirname, join
 
-def load_model(path: str = "../climber_modeling/models/xgboost.pkl"):
+DATA_DIR = join(dirname(__file__), "appdata")
+
+
+def load_model(path: str = join(DATA_DIR, "xgboost.pkl")):
     """
-    Loads a the climbing model
+    Loads the climbing model.
     """
 
-    return pickle.load(open(path), 'rb')
+    return pickle.load(open(path, 'rb'))
 
-def load_scaler(path: str = "../climber_modeling/models/std_scaler"):
+def load_scaler(path: str = join(DATA_DIR, "std_scaler.pkl")):
     """
     Loads the standard scaler.
     """
 
-    return pickle.load(open(path), 'rb')
+    return pickle.load(open(path, 'rb'))
 
 def standardize_input(scaler, input_array: np.array) -> np.array:
     """
@@ -30,7 +34,7 @@ def translate_grade(grade_id: float) -> int:
 
     rounded_grade_id = round(grade_id)
 
-    df = pd.read_csv("../climber_modeling/data/processed/grade_conversion.csv")
+    df = pd.read_csv(join(DATA_DIR, "grade_conversion.csv"))
 
     vgrade = df.loc[(df["grade_id"] == rounded_grade_id),["usa_boulders"]].values
 
@@ -43,6 +47,6 @@ def predict(input_array: np.array) -> str:
     model = load_model()
     scaler = load_scaler()
     std_input = standardize_input(scaler, input_array)
-    raw_prediction = model.predict(std_input)
+    raw_prediction = model.predict(std_input).item(0)
 
     return translate_grade(raw_prediction)
